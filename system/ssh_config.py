@@ -78,19 +78,19 @@ EXAMPLES=r'''
 
 # Use opts to pass a whole dict
 - ssh_config: 
-    name: '{{item.key}}'
-    opts: '{{item.value}}'
-  with_dict:
-    'qaz.andara.com':
-        hostname: 'andara.com'
-        user: qaz
-        port: 50022
-        identity_file: '~/.ssh/id_rsa-5'
-    'baz.andara.com':
-        hostname: 'andara.com'
-        user: baz
-        port: 60022
-        identity_file: '~/.ssh/id_rsa-6'
+    name: '{{item.name}}'
+    opts: '{{item}}'
+  with_items:
+  - name: 'qaz.andara.com'
+    hostname: 'andara.com'
+    user: qaz
+    port: 50022
+    identity_file: '~/.ssh/id_rsa-5'
+  - name: 'baz.andara.com'
+    hostname: 'andara.com'
+    user: baz
+    port: 60022
+    identity_file: '~/.ssh/id_rsa-6'
 '''
 
 import re

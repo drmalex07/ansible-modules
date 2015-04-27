@@ -42,7 +42,6 @@ options:
   hash_known_hosts:
     description: HashKnownHosts
     required: no
-    default: yes
     choices: ['yes', 'no']
   host_key_alias:
     description: HostKeyAlias
@@ -54,6 +53,10 @@ options:
     description: RequestTTY
     required: no
     choices: ['no', 'yes', 'force', 'auto']
+  strict_host_key_checking:
+    description: StrictHostKeyChecking
+    required: no
+    choices: ['yes', 'no', 'ask']
 '''
 
 EXAMPLES=r'''
@@ -160,12 +163,12 @@ def generate_host_config(name, p):
     
     v = p.get('local_forward')
     if v:
-        # Todo Validate 
+        # Todo Validate <port> <host>:<port>
         lines.append('  LocalForward %s\n' % (v))
     
     v = p.get('remote_forward')
     if v:
-        # Todo Validate 
+        # Todo Validate <port> <host>:<port>
         lines.append('  RemoteForward %s\n' % (v))
     
     v = p.get('hash_known_hosts')
@@ -183,7 +186,11 @@ def generate_host_config(name, p):
     v = p.get('host_key_alias')
     if v:
         lines.append('  HostKeyAlias %s\n' % (v))
-
+    
+    v = p.get('strict_host_key_checking')
+    if v:
+        lines.append('  StrictHostKeyChecking %s\n' % (v))
+    
     return lines
 
 def main():
@@ -192,7 +199,7 @@ def main():
             name = dict(required=True),
             hostname = dict(),
             host_key_alias = dict(),
-            hash_known_hosts = dict(required=False, choices=BOOLEANS, default=True),
+            hash_known_hosts = dict(choices=['yes', 'no']),
             port = dict(type='int'),
             identity_file = dict(),
             user = dict(),
@@ -203,6 +210,7 @@ def main():
             remote_forward = dict(),
             send_env = dict(),
             request_tty = dict(choices=['yes', 'no', 'force', 'auto']),
+            strict_host_key_checking = dict(choices=['yes', 'no', 'ask']),
             # an alternative: pass all parameters as a dict
             opts = dict()
         )

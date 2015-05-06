@@ -8,7 +8,7 @@ description: >
   described at ssh_config manpage. Note that, this module provides only minimal validation 
   of input values supplied to it.
 options:
-  name: ~
+  name:
     description: Name this host stanza
     required: yes
   hostname:
